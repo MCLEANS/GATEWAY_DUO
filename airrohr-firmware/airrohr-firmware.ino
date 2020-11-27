@@ -3883,6 +3883,10 @@ void switch_status_LEDs_off(uint8_t LED, bool off_state) {
 	pcf8575.digitalWrite(LED,LOW);
 }
 
+void switch_status_LEDS_on(uint8_t LED, bool on_state) {
+	pcf8575.digitalWrite(LED,on_state);
+}
+
 /****************************************************************
  * INITIALIZE SPH0645 MICROPHONE
  * **************************************************************/
