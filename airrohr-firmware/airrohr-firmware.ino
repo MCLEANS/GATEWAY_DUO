@@ -3883,6 +3883,10 @@ void switch_status_LEDs_off(uint8_t LED, bool off_state) {
 	pcf8575.digitalWrite(LED,LOW);
 }
 
+void switch_status_LEDs_on(uint8_t LED, bool on_state) {
+	pcf8575.digitalWrite(LED,on_state);
+}
+
 /****************************************************************
  * INITIALIZE SPH0645 MICROPHONE
  * **************************************************************/
@@ -5031,11 +5035,28 @@ void setup(void) {
 #endif
 #endif
 	if(cfg::wifi_enabled && cfg::send_logged_data){
+		// Turn on all status LEDs to indicate sending data to API
+		switch_status_LEDs_on(PMS_LED,HIGH);
+		switch_status_LEDs_on(GPS_LED,HIGH);
+		switch_status_LEDs_on(LOGGER_LED,HIGH);
+		switch_status_LEDs_on(DHT_LED,HIGH);
+		switch_status_LEDs_on(RTC_LED,HIGH);
+		switch_status_LEDs_on(MIC_LED,HIGH);
+
 		readLoggingFileAndSendToCFA();
 		cfg::log_file_id += 1;
 		cfg::wifi_enabled = 0;
 		cfg::send_logged_data = 0;
 		writeConfig();
+
+		//Turn off all status LEDS to indicate completion of sending to API
+		switch_status_LEDs_off(PMS_LED,LOW); 
+		switch_status_LEDs_off(GPS_LED,LOW);
+		switch_status_LEDs_off(LOGGER_LED,LOW);
+		switch_status_LEDs_off(DHT_LED,LOW);
+		switch_status_LEDs_off(RTC_LED,LOW);
+		switch_status_LEDs_off(MIC_LED,LOW);
+
 		delay(300000); //Delay for 5 minutes before starting another sample cycle.
 	}
 	starttime = millis();									// store the start time
