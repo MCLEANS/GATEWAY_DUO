@@ -3883,7 +3883,7 @@ void switch_status_LEDs_off(uint8_t LED, bool off_state) {
 	pcf8575.digitalWrite(LED,LOW);
 }
 
-void switch_status_LEDS_on(uint8_t LED, bool on_state) {
+void switch_status_LEDs_on(uint8_t LED, bool on_state) {
 	pcf8575.digitalWrite(LED,on_state);
 }
 
@@ -5036,12 +5036,12 @@ void setup(void) {
 #endif
 	if(cfg::wifi_enabled && cfg::send_logged_data){
 		// Turn on all status LEDs to indicate sending data to API
-		switch_status_LEDS_on(PMS_LED,HIGH);
-		switch_status_LEDS_on(GPS_LED,HIGH);
-		switch_status_LEDS_on(LOGGER_LED,HIGH);
-		switch_status_LEDS_on(DHT_LED,HIGH);
-		switch_status_LEDS_on(RTC_LED,HIGH);
-		switch_status_LEDS_on(MIC_LED,HIGH);
+		switch_status_LEDs_on(PMS_LED,HIGH);
+		switch_status_LEDs_on(GPS_LED,HIGH);
+		switch_status_LEDs_on(LOGGER_LED,HIGH);
+		switch_status_LEDs_on(DHT_LED,HIGH);
+		switch_status_LEDs_on(RTC_LED,HIGH);
+		switch_status_LEDs_on(MIC_LED,HIGH);
 
 		readLoggingFileAndSendToCFA();
 		cfg::log_file_id += 1;
