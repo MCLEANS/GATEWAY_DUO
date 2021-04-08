@@ -53,13 +53,13 @@ input[type='text']{width:100%;}\
 input[type='password']{width:100%;}\
 input[type='submit']{color:white;text-align:left;border-radius:5px;font-size:medium;background:#b33;box-shadow:0px 2px 2px #b33;padding:9px !important;width:100%;border-style:none;}\
 input[type='submit']:hover {background:#d44} \
-.s_green{padding:9px !important;width:100%;border-style:none;background:#3ba;color:white;text-align:left;}\
+.s_green{padding:9px !important;width:100%;border-style:none;background:#3bf;color:white;text-align:left;}\
 </style>\
 </head><body>\
 <div style='min-height:129px;background-color:#3ba;margin-bottom:20px;box-shadow:0px 4px 6px #3ba'>\
 <a href='/' style='background:none;display:inline'><img src='/images?name=luftdaten_logo' style='float:left;margin:20px' width='100' height='89'/></a>";
 
-const char WEB_PAGE_HEADER_BODY[] PROGMEM = "<h3 style='margin:0'>" INTL_PM_SENSOR "</h3>\
+const char WEB_PAGE_HEADER_BODY[] PROGMEM = "<h3 style='margin:0'>" INTL_BOARD_NAME "</h3>\
 <small>ID: {id}<br/>MAC: {mac}<br/>" INTL_FIRMWARE ": " SOFTWARE_VERSION_STR "<br/>(" __DATE__ " " __TIME__ ")<br/>\
 <a href='https://github.com/opendata-stuttgart/sensors-software/labels/bug' target='_blank' rel='noreferrer'>Report an issue</a>\
 </small></div><div class='content'><h4>" INTL_HOME " {n} {t}</h4>";

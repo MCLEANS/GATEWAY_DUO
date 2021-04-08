@@ -11,7 +11,7 @@ const char WWW_PASSWORD[] PROGMEM = "feinstaub";
 #define WWW_BASICAUTH_ENABLED 0
 
 // Sensor Wifi config (config mode)
-#define FS_SSID "sensorsAFRICA-"
+#define FS_SSID "GATEWAY_DUO-"
 #define FS_PWD ""
 
 // Where to send the data?

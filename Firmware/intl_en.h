@@ -10,13 +10,14 @@
 
 const char INTL_LANG[] = "EN";
 #define INTL_PM_SENSOR "Particulate matter sensor"
+#define INTL_BOARD_NAME "GATEWAY DUO"
 const char INTL_CONFIGURATION[] PROGMEM = "Configuration";
 #define INTL_WIFI_SETTINGS "WiFi Settings"
 #define INTL_WIFI_NETWORKS "Loading wifi networks ..."
 #define INTL_LANGUAGE "Language"
 const char INTL_NO_NETWORKS[] PROGMEM =  "No WiFi Network Found";
 const char INTL_NETWORKS_FOUND[] PROGMEM = "Found Networks: ";
-const char INTL_AB_HIER_NUR_ANDERN[] PROGMEM = "Advanced settings (оnly if you know what you are doing)";
+const char INTL_AB_HIER_NUR_ANDERN[] PROGMEM = "Advanced settings";
 const char INTL_SAVE[] PROGMEM = "Save";
 const char INTL_SENSORS[] PROGMEM = "Sensors";
 const char INTL_MORE_SENSORS[] PROGMEM = "More Sensors";
@@ -39,7 +40,7 @@ const char INTL_BASICAUTH[] PROGMEM = "Authentication";
 
 const char INTL_ENABLE_WIFI[] PROGMEM = "WIFI ENABLED";
 const char INTL_SEND_LOGGED_DATA[] PROGMEM = "SEND LOGGED DATA";
-const char INTL_FS_WIFI_DESCRIPTION[] PROGMEM = "WiFi Sensor in configuration mode";
+const char INTL_FS_WIFI_DESCRIPTION[] PROGMEM = "Gateway config mode";
 const char INTL_FS_WIFI_NAME[] PROGMEM = "Network name";
 const char INTL_MORE_SETTINGS[] PROGMEM ="More settings";
 const char INTL_AUTO_UPDATE[] PROGMEM = "Auto update firmware";
