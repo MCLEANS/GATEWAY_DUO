@@ -12,17 +12,7 @@ Bool		www_basicauth_enabled
 Bool        wifi_enabled
 Bool		dht_read
 Bool		pms_read
-Bool		send2cfa
-Bool		ssl_cfa
-Bool		send2dusti
-Bool		ssl_dusti
-Bool		send2madavi
-Bool		ssl_madavi
-Bool		send2sensemap
-Bool		send2fsapp
-Bool		send2aircms
 Bool		send2csv
-Bool		send2sd
 Bool		auto_update
 Bool		use_beta
 Bool		display_wifi_info

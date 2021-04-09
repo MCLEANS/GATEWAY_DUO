@@ -35,17 +35,7 @@ enum ConfigShapeId {
 	Config_wifi_enabled,
 	Config_dht_read,
 	Config_pms_read,
-	Config_send2cfa,
-	Config_ssl_cfa,
-	Config_send2dusti,
-	Config_ssl_dusti,
-	Config_send2madavi,
-	Config_ssl_madavi,
-	Config_send2sensemap,
-	Config_send2fsapp,
-	Config_send2aircms,
 	Config_send2csv,
-	Config_send2sd,
 	Config_auto_update,
 	Config_use_beta,
 	Config_display_wifi_info,
@@ -81,17 +71,7 @@ const char CFG_KEY_WWW_BASICAUTH_ENABLED[] PROGMEM = "www_basicauth_enabled";
 const char CFG_KEY_WIFI_ENABLED[] PROGMEM = "wifi_enabled";
 const char CFG_KEY_DHT_READ[] PROGMEM = "dht_read";
 const char CFG_KEY_PMS_READ[] PROGMEM = "pms_read";
-const char CFG_KEY_SEND2CFA[] PROGMEM = "send2cfa";
-const char CFG_KEY_SSL_CFA[] PROGMEM = "ssl_cfa";
-const char CFG_KEY_SEND2DUSTI[] PROGMEM = "send2dusti";
-const char CFG_KEY_SSL_DUSTI[] PROGMEM = "ssl_dusti";
-const char CFG_KEY_SEND2MADAVI[] PROGMEM = "send2madavi";
-const char CFG_KEY_SSL_MADAVI[] PROGMEM = "ssl_madavi";
-const char CFG_KEY_SEND2SENSEMAP[] PROGMEM = "send2sensemap";
-const char CFG_KEY_SEND2FSAPP[] PROGMEM = "send2fsapp";
-const char CFG_KEY_SEND2AIRCMS[] PROGMEM = "send2aircms";
 const char CFG_KEY_SEND2CSV[] PROGMEM = "send2csv";
-const char CFG_KEY_SEND2SD[] PROGMEM = "send2sd";
 const char CFG_KEY_AUTO_UPDATE[] PROGMEM = "auto_update";
 const char CFG_KEY_USE_BETA[] PROGMEM = "use_beta";
 const char CFG_KEY_DISPLAY_WIFI_INFO[] PROGMEM = "display_wifi_info";
@@ -127,17 +107,7 @@ static constexpr ConfigShapeEntry configShape[] PROGMEM = {
 	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_WIFI_ENABLED), &cfg::wifi_enabled },
 	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_DHT_READ), &cfg::dht_read },
 	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_PMS_READ), &cfg::pms_read },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SEND2CFA), &cfg::send2cfa },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SSL_CFA), &cfg::ssl_cfa },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SEND2DUSTI), &cfg::send2dusti },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SSL_DUSTI), &cfg::ssl_dusti },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SEND2MADAVI), &cfg::send2madavi },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SSL_MADAVI), &cfg::ssl_madavi },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SEND2SENSEMAP), &cfg::send2sensemap },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SEND2FSAPP), &cfg::send2fsapp },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SEND2AIRCMS), &cfg::send2aircms },
 	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SEND2CSV), &cfg::send2csv },
-	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_SEND2SD), &cfg::send2sd },
 	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_AUTO_UPDATE), &cfg::auto_update },
 	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_USE_BETA), &cfg::use_beta },
 	{ Config_Type_Bool, 0, FPSTR(CFG_KEY_DISPLAY_WIFI_INFO), &cfg::display_wifi_info },
