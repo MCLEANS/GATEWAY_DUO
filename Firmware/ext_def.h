@@ -146,6 +146,12 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = " ";
 #define PMS_READ 1
 #define PMS_API_PIN 1
 
+// Show wifi info on displays
+#define DISPLAY_WIFI_INFO 1
+
+// Show device info on displays
+#define DISPLAY_DEVICE_INFO 1
+
 // automatic firmware updates
 #define AUTO_UPDATE 0
 

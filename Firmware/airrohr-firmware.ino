@@ -2050,56 +2050,6 @@ static unsigned long sendData(const LoggerEntry logger, const String& data, cons
 }
 
 /*****************************************************************
- * send single sensor data to sensors.AFRICA api                  *
- *****************************************************************/
-static unsigned long sendCFA(const String &data, const int pin, const __FlashStringHelper *sensorname, const char *replace_str)
-{
-	unsigned long sum_send_time = 0;
-
-	if (cfg::send2cfa && data.length())
-	{
-		RESERVE_STRING(data_CFA, LARGE_STR);
-		data_CFA = FPSTR(data_first_part);
-
-		debug_outln_info(F("## Sending to sensors.AFRICA - "), sensorname);
-		data_CFA += data;
-		data_CFA.remove(data_CFA.length() - 1);
-		data_CFA.replace(replace_str, emptyString);
-		data_CFA += "], \"timestamp\":";
-		data_CFA += "\"";
-		//data_CFA += timestamp;
-		data_CFA += "\"";
-		data_CFA += "}";
-		Serial.println(data_CFA);
-		
-		sum_send_time = sendData(LoggerCFA, data_CFA, pin, HOST_CFA, URL_CFA);
-	}
-
-	return sum_send_time;
-}
-
-/*****************************************************************
- * send single sensor data to sensor.community api                *
- *****************************************************************/
-static unsigned long sendSensorCommunity(const String& data, const int pin, const __FlashStringHelper* sensorname, const char* replace_str) {
-	unsigned long sum_send_time = 0;
-
-	if (cfg::send2dusti && data.length()) {
-		RESERVE_STRING(data_sensorcommunity, LARGE_STR);
-		data_sensorcommunity = FPSTR(data_first_part);
-
-		debug_outln_info(F("## Sending to sensor.community - "), sensorname);
-		data_sensorcommunity += data;
-		data_sensorcommunity.remove(data_sensorcommunity.length() - 1);
-		data_sensorcommunity.replace(replace_str, emptyString);
-		data_sensorcommunity += "]}";
-		sum_send_time = sendData(LoggerSensorCommunity, data_sensorcommunity, pin, HOST_SENSORCOMMUNITY, URL_SENSORCOMMUNITY);
-	}
-
-	return sum_send_time;
-}
-
-/*****************************************************************
  * send data to mqtt api                                         *
  *****************************************************************/
 // rejected (see issue #33)
@@ -2199,16 +2149,6 @@ static void fetchSensorDHT(String& s) {
 
 	debug_outln_verbose(FPSTR(DBG_TXT_END_READING), FPSTR(SENSORS_DHT22));
 }
-
-
-
-
-
-
-
-
-
-
 
 /*****************************************************************
  * read Plantronic PM sensor sensor values                       *
@@ -2388,9 +2328,6 @@ static bool fwDownloadStream(WiFiClientSecure& client, const String& url, Stream
 	int bytes_written = -1;
 
 	http.setTimeout(20 * 1000);
-/*	http.setUserAgent(SOFTWARE_VERSION + ' ' + esp_chipid + ' ' + SDS_version_date() + ' ' +
-				 String(cfg::current_lang) + ' ' + String(CURRENT_LANG) + ' ' +
-				 String(cfg::use_beta ? F("BETA") : F("")));  */
     http.setReuse(false);
 
 	debug_outln_verbose(F("HTTP GET: "), String(FPSTR(FW_DOWNLOAD_HOST)) + ':' + String(FW_DOWNLOAD_PORT) + url);
@@ -2857,8 +2794,9 @@ void loop(void) {
 		if (cfg::pms_read) {
 			data += result_PMS;
       		if(cfg::wifi_enabled) {
-				sum_send_time += sendCFA(result_PMS, PMS_API_PIN, FPSTR(SENSORS_PMSx003), "PMS_");
-				sum_send_time += sendSensorCommunity(result_PMS, PMS_API_PIN, FPSTR(SENSORS_PMSx003), "PMS_");
+				/**
+				 * Send PMS value here
+				 */
 			}
 		}
 		
@@ -2867,8 +2805,9 @@ void loop(void) {
 			fetchSensorDHT(result);
 			data += result;
       		if(cfg::wifi_enabled) {
-				sum_send_time += sendCFA(result, DHT_API_PIN, FPSTR(SENSORS_DHT22), "DHT_");
-				sum_send_time += sendSensorCommunity(result, DHT_API_PIN, FPSTR(SENSORS_DHT22), "DHT_");
+				/**
+				 * Send DHT value here
+				 */
 			}
 			result = emptyString;
 		}
