@@ -121,40 +121,9 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = " ";
 #define PM_SERIAL_RX D0
 #define PM_SERIAL_TX D0
 
-// define pins for I2C
-#define I2C_PIN_SCL D1
-#define I2C_PIN_SDA D2
-
 //define pins for ATMEGA328P
 #define ATMEGA_RX D4
 #define ATMEGA_TX D3
-
-// define serial interface pins for GPS modules
-#define GPS_SERIAL_RX D0
-#define GPS_SERIAL_TX D0
-
-// define pins for RTC I2C interface
-#define RTC_PIN_SDA D2
-#define RTC_PIN_SCL D1
-
-// define pins for the micro_sd logger shield
-#define SD_SCK D5
-#define SD_MISO D6
-#define SD_MOSI D7
-#define SD_chipSelect D8
-
-// define pins for the PCF8575 gpio expander
-#define SCL D1
-#define SDA D2
-
-// PPD42NS, the cheaper version of the particle sensor
-#define PPD_PIN_PM1 GPS_SERIAL_TX
-#define PPD_PIN_PM2 GPS_SERIAL_RX
-
-//define I2S pins for the SPH0645 MIC
-#define I2SI_DATA         12    // I2S data on GPIO12
-#define I2SI_BCK          13    // I2S clk on GPIO13
-#define I2SI_WS           14    // I2S select on GPIO14
 
 // define pins for status LEDs
 #define GPS_LED P0
@@ -165,177 +134,23 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = " ";
 #define DHT_LED P5
 #endif
 
-
-// pin assignments for Arduino SAMD Zero board
-#if defined(ARDUINO_SAMD_ZERO)
-#define ONEWIRE_PIN D7
-#define PPD_PIN_PM1 GPS_SERIAL_TX
-#define PPD_PIN_PM2 GPS_SERIAL_RX
-#if defined(SERIAL_PORT_USBVIRTUAL)
-#define RFM69_CS 8
-#define RFM69_RST 4
-#define RFM69_INT 3
-#endif
-#endif
-
-// pin assignments for lolin_d32_pro board
-#if defined(ARDUINO_LOLIN_D32_PRO)
-#define ONEWIRE_PIN D32
-#define PM_SERIAL_RX D27
-#define PM_SERIAL_TX D33
-#if defined(FLIP_I2C_PMSERIAL) // exchange the pins of the ports to use external i2c connector for gps
-#define I2C_PIN_SCL D23
-#define I2C_PIN_SDA D19
-#define GPS_SERIAL_RX D22
-#define GPS_SERIAL_TX D21
-#else
-#define I2C_PIN_SCL D22
-#define I2C_PIN_SDA D21
-#define GPS_SERIAL_RX D19
-#define GPS_SERIAL_TX D23
-#endif
-#define PPD_PIN_PM1 GPS_SERIAL_TX
-#define PPD_PIN_PM2 GPS_SERIAL_RX
-//#define RFM69_CS D0
-//#define RFM69_RST D2
-//#define RFM69_INT D4
-#endif
-
-// pin assignments for heltec_wifi_lora_32_V2 board
-#if defined(WIFI_LoRa_32_V2)
-#define ONEWIRE_PIN D32
-#define I2C_PIN_SCL D22
-#define I2C_PIN_SDA D17_WROOM_ONLY
-#define PM_SERIAL_RX D23
-#define PM_SERIAL_TX D2_STRAPPING
-#define GPS_SERIAL_RX D13_JTAG_TCK
-#define GPS_SERIAL_TX D0_STRAPPING
-#define PPD_PIN_PM1 GPS_SERIAL_TX
-#define PPD_PIN_PM2 GPS_SERIAL_RX
-#endif
-
-// pin assignments for heltec_wifi_lora_32 board
-#if defined(WIFI_LoRa_32)
-#define ONEWIRE_PIN D25 // TODO: this overlaps with LED, so it might not work
-#define I2C_PIN_SCL D22
-#define I2C_PIN_SDA D17_WROOM_ONLY
-#define PM_SERIAL_RX D23
-#define PM_SERIAL_TX D2_STRAPPING
-#define GPS_SERIAL_RX D13_JTAG_TCK
-#define GPS_SERIAL_TX D0_STRAPPING
-#define PPD_PIN_PM1 GPS_SERIAL_TX
-#define PPD_PIN_PM2 GPS_SERIAL_RX
-#endif
-
-//Activate device to send logged data
-#define SEND_LOGGED_DATA 0
-
 // Device is WiFi Enabled
 #define WIFI_ENABLED 0
-
-//SPH0645 MEMS Microphone
-#define SPHO645_READ  1
-#define SPH0645_API_PIN 15
 
 // DHT22, temperature, humidity
 #define DHT_READ 1
 #define DHT_TYPE DHT22
 #define DHT_API_PIN 7
 
-// RTC
-#define RTC_READ 1
-#define RTC_API_PIN 2
-
-// MicroSD
-#define SD_READ 1
-
-// HTU21D, temperature, humidity
-#define HTU21D_READ 0
-#define HTU21D_API_PIN 7
-
-// PPD42NS, the cheaper version of the particle sensor
-#define PPD_READ 0
-#define PPD_API_PIN 5
-
-// SDS011, the more expensive version of the particle sensor
-#define SDS_READ 0
-#define SDS_API_PIN 1
-
 // PMS1003, PMS300, 3PMS5003, PMS6003, PMS7003
 #define PMS_READ 1
 #define PMS_API_PIN 1
-
-// Honeywell PM sensor
-#define HPM_READ 0
-#define HPM_API_PIN 1
-
-// Sensirion SPS30, the more expensive version of the particle sensor
-#define SPS30_READ 0
-#define SPS30_API_PIN 1
-#define SPS30_WAITING_AFTER_LAST_READ 11000   // waiting time after last reading mesurement data in ms
-#define SPS30_AUTO_CLEANING_INTERVAL 7200 // time in seconds
-
-// BMP180, temperature, pressure
-#define BMP_READ 0
-#define BMP_API_PIN 3
-
-// BMP280/BME280, temperature, pressure (humidity on BME280)
-#define BMX280_READ 0
-#define BMP280_API_PIN 3
-#define BME280_API_PIN 11
-
-// SHT3x, temperature, pressure
-#define SHT3X_READ 0
-#define SHT3X_API_PIN 7
-
-// DS18B20, temperature
-#define DS18B20_READ 0
-#define DS18B20_API_PIN 13
-
-// DNMS Noise Measurement
-#define DNMS_READ 0
-#define DNMS_API_PIN 15
-#define DNMS_CORRECTION "0.0"
-
-// GPS, preferred Neo-6M
-#define GPS_READ 1
-#define GPS_API_PIN 9
-
-// MHZ19 CO2 sensor
-#define MHZ19_READ 0
 
 // automatic firmware updates
 #define AUTO_UPDATE 0
 
 // use beta firmware
 #define USE_BETA 0
-
-// OLED Display SSD1306 connected?
-#define HAS_DISPLAY 0
-
-// OLED Display SH1106 connected?
-#define HAS_SH1106 0
-
-// OLED Display um 180° gedreht?
-#define HAS_FLIPPED_DISPLAY 0
-
-// LCD Display LCD1602 connected?
-#define HAS_LCD1602 0
-
-// LCD Display LCD1602 (0x27) connected?
-#define HAS_LCD1602_27 0
-
-// LCD Display LCD2004 connected?
-#define HAS_LCD2004 0
-
-// LCD Display LCD2004 (0x27) connected?
-#define HAS_LCD2004_27 0
-
-// Show wifi info on displays
-#define DISPLAY_WIFI_INFO 1
-
-// Show device info on displays
-#define DISPLAY_DEVICE_INFO 1
 
 // Set debug level for serial output?
 #define DEBUG 3
