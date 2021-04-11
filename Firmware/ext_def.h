@@ -111,7 +111,7 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = " ";
 //  pin assignments for NodeMCU V2 board
 #if defined(ESP8266)
 // define pin for one wire sensors
-#define ONEWIRE_PIN D0
+#define ONEWIRE_PIN D7
 
 // define serial interface pins for particle sensors
 // Serial confusion: These definitions are based on SoftSerial

@@ -329,10 +329,6 @@ float last_value_PMS_P2 = -1.0;
 
 String last_data_string;
 int last_signal_strength;
-bool readGPSFromAtmega = true;
-
-bool readDHTFromAtmega = true;
-
 
 String esp_chipid;
 String last_value_SDS_version;
