@@ -125,15 +125,6 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = " ";
 #define ATMEGA_RX D4
 #define ATMEGA_TX D3
 
-// define pins for status LEDs
-#define GPS_LED P0
-#define LOGGER_LED P1
-#define RTC_LED P2
-#define MIC_LED P3
-#define PMS_LED P4
-#define DHT_LED P5
-#endif
-
 // Device is WiFi Enabled
 #define WIFI_ENABLED 0
 

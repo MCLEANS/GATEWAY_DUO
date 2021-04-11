@@ -2788,6 +2788,7 @@ void loop(void) {
 
 
 		if (cfg::pms_read) {
+			fetchSensorPMS(result_PMS);
 			data += result_PMS;
       		if(cfg::wifi_enabled) {
 				/**
@@ -2817,6 +2818,8 @@ void loop(void) {
 			data.remove(data.length() - 1);
 		}
 		data += "]}";
+
+		send_csv(data);
 
 		yield();
 
