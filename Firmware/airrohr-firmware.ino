@@ -233,8 +233,6 @@ enum class PmSensorCmd {
 	ContinuousMode
 };
 
-LoggerConfig loggerConfigs[LoggerCount];
-
 long int sample_count = 0;
 bool htu21d_init_failed = false;
 bool bmp_init_failed = false;
@@ -646,80 +644,6 @@ static void writeConfig() {
 	} else {
 		debug_outln_error(F("failed to open config file for writing"));
 	}
-}
-
-/*****************************************************************
- * Prepare information for data Loggers                          *
- *****************************************************************/
-static void createLoggerConfigs() {
-#if defined(ESP8266)
-	auto new_session = []() { return new BearSSL::Session; };
-#else
-	auto new_session = []() { return nullptr; };
-#endif
-  	if (cfg::send2cfa) {
-    	loggerConfigs[LoggerCFA].destport = 80;
-    	if (cfg::ssl_cfa) {
-      		loggerConfigs[LoggerCFA].destport = 80;
-      		loggerConfigs[LoggerCFA].session = new_session();
-    	}
-  	}
-	if (cfg::send2dusti) {
-		loggerConfigs[LoggerSensorCommunity].destport = 80;
-		if (cfg::ssl_dusti) {
-			loggerConfigs[LoggerSensorCommunity].destport = 443;
-			loggerConfigs[LoggerSensorCommunity].session = new_session();
-		}
-	}
-	loggerConfigs[LoggerMadavi].destport = PORT_MADAVI;
-	if (cfg::send2madavi && cfg::ssl_madavi) {
-		loggerConfigs[LoggerMadavi].destport = 443;
-		loggerConfigs[LoggerMadavi].session = new_session();
-	}
-	loggerConfigs[LoggerSensemap].destport = PORT_SENSEMAP;
-	loggerConfigs[LoggerSensemap].session = new_session();
-	loggerConfigs[LoggerFSapp].destport = PORT_FSAPP;
-	loggerConfigs[LoggerFSapp].session = new_session();
-	loggerConfigs[Loggeraircms].destport = PORT_AIRCMS;
-	loggerConfigs[LoggerInflux].destport = cfg::port_influx;
-	if (cfg::send2influx && cfg::ssl_influx) {
-		loggerConfigs[LoggerInflux].session = new_session();
-	}
-	loggerConfigs[LoggerCustom].destport = cfg::port_custom;
-	if (cfg::send2custom && (cfg::ssl_custom || (cfg::port_custom == 443))) {
-		loggerConfigs[LoggerCustom].session = new_session();
-	}
-}
-
-/*****************************************************************
- * aircms.online helper functions                                *
- *****************************************************************/
-static String sha1Hex(const String& s) {
-	char sha1sum_output[20];
-
-#if defined(ESP8266)
-	br_sha1_context sc;
-
-	br_sha1_init(&sc);
-	br_sha1_update(&sc, s.c_str(), s.length());
-	br_sha1_out(&sc, sha1sum_output);
-#endif
-#if defined(ESP32)
-	esp_sha(SHA1, (const unsigned char*) s.c_str(), s.length(), (unsigned char*)sha1sum_output);
-#endif
-	String r;
-	for (uint16_t i = 0; i < 20; i++) {
-		char hex[3];
-		snprintf(hex, sizeof(hex), "%02x", sha1sum_output[i]);
-		r += hex;
-	}
-	return r;
-}
-
-static String hmac1(const String& secret, const String& s) {
-	String str = sha1Hex(s);
-	str = secret + str;
-	return sha1Hex(str);
 }
 
 /*****************************************************************
