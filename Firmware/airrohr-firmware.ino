@@ -108,6 +108,8 @@ String SOFTWARE_VERSION(SOFTWARE_VERSION_STR);
 #include "html-content.h"
 #include "ca-root.h"
 
+#include "GSM_GPRS.h"
+
 /******************************************************************
  * Constants                                                      *
  ******************************************************************/
@@ -270,6 +272,11 @@ SoftwareSerial serialSDS;
  * ATMEGA328P declaration
  * **************************************************************/
 SoftwareSerial atmega328p;
+
+/****************************************************************
+ * GSM declaration
+ * **************************************************************/
+custom_libraries::GSM_GPRS gprs(GSM_TX,GSM_RX);
 
 /*****************************************************************
  * DHT declaration                                               *
@@ -1992,7 +1999,7 @@ static bool sendDataWIFI(const String &data,const char* url){
 		// Your Domain name with URL path or IP address with path
 		if(http.begin(client_,url)){
 			http.addHeader("Content-Type", "application/json");
-			int httpResponseCode = http.POST("{\"controlValue\":23,\"error\":2,\"actualValue\":24.25,\"parameter\":1,\"time\":1005}");
+			int httpResponseCode = http.POST("{\"controlValue\":763,\"error\":2,\"actualValue\":47.25,\"parameter\":1,\"time\":1005}");
 			Serial.print("HTTP Response code: ");
 			Serial.println(httpResponseCode);
 			/* Check if the data was sent sucessfully */
@@ -2546,67 +2553,6 @@ static void setupNetworkTime() {
 	configTime(0, 0, ntpServer1, ntpServer2, ntpServer3);
 }
 
-static unsigned long sendDataToOptionalApis(const String &data) {
-	unsigned long sum_send_time = 0;
-
-	if (cfg::send2madavi) {
-		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("madavi.de: "));
-		sum_send_time += sendData(LoggerMadavi, data, 0, HOST_MADAVI, URL_MADAVI);
-	}
-
-	if (cfg::send2sensemap && (cfg::senseboxid[0] != '\0')) {
-		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("opensensemap: "));
-		String sensemap_path(tmpl(FPSTR(URL_SENSEMAP), cfg::senseboxid));
-		sum_send_time += sendData(LoggerSensemap, data, 0, HOST_SENSEMAP, sensemap_path.c_str());
-	}
-
-	if (cfg::send2fsapp) {
-		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("Server FS App: "));
-		sum_send_time += sendData(LoggerFSapp, data, 0, HOST_FSAPP, URL_FSAPP);
-	}
-
-	if (cfg::send2aircms) {
-		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("aircms.online: "));
-		unsigned long ts = millis() / 1000;
-		String token = WiFi.macAddress();
-		String aircms_data("L=");
-		aircms_data += esp_chipid;
-		aircms_data += "&t=";
-		aircms_data += String(ts, DEC);
-		aircms_data += F("&airrohr=");
-		aircms_data += data;
-		String aircms_url(FPSTR(URL_AIRCMS));
-		aircms_url += hmac1(sha1Hex(token), aircms_data + token);
-
-		sum_send_time += sendData(Loggeraircms, aircms_data, 0, HOST_AIRCMS, aircms_url.c_str());
-	}
-
-	if (cfg::send2influx) {
-		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("custom influx db: "));
-		RESERVE_STRING(data_4_influxdb, LARGE_STR);
-		create_influxdb_string_from_data(data_4_influxdb, data);
-		sum_send_time += sendData(LoggerInflux, data_4_influxdb, 0, cfg::host_influx, cfg::url_influx);
-	}
-
-	if (cfg::send2custom) {
-		String data_to_send = data;
-		data_to_send.remove(0, 1);
-		String data_4_custom(F("{\"esp8266id\": \""));
-		data_4_custom += esp_chipid;
-		data_4_custom += "\", ";
-		data_4_custom += data_to_send;
-		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("custom api: "));
-		sum_send_time += sendData(LoggerCustom, data_4_custom, 0, cfg::host_custom, cfg::url_custom);
-	}
-
-	if (cfg::send2csv) {
-		debug_outln_info(F("## Sending as csv: "));
-		send_csv(data);
-	}
-
-	return sum_send_time;
-}
-
 /*****************************************************************
  * The Setup                                                     *
  *****************************************************************/
@@ -2736,6 +2682,9 @@ void loop(void) {
 
 	
 	yield();
+	sendDataWIFI("data","http://pid-api.herokuapp.com/post/data");
+	gprs.send_data("http://pid-api.herokuapp.com/post/data","{\"controlValue\":76,\"error\":2,\"actualValue\":98.97,\"parameter\":1,\"time\":1005}");
+
 
 	if (send_now) {
 		last_signal_strength = WiFi.RSSI();
@@ -2743,8 +2692,7 @@ void loop(void) {
 		data = FPSTR(data_first_part);
 		RESERVE_STRING(result, MED_STR);
 
-		sendData("data","http://pid-api.herokuapp.com/post/data");
-
+		
 
 		if (cfg::pms_read) {
 			fetchSensorPMS(result_PMS);
@@ -2783,7 +2731,7 @@ void loop(void) {
 		yield();
 
 		if(cfg::wifi_enabled) {
-			sum_send_time += sendDataToOptionalApis(data);
+			/* do stuff */
 		}
 
 		// https://en.wikipedia.org/wiki/Moving_average#Cumulative_moving_average

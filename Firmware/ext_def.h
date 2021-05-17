@@ -125,6 +125,10 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = " ";
 #define ATMEGA_RX D4
 #define ATMEGA_TX D3
 
+//GSM PINS
+#define GSM_RX D5
+#define GSM_TX D6
+
 // Device is WiFi Enabled
 #define WIFI_ENABLED 0
 
