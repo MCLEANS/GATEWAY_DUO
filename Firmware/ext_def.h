@@ -151,3 +151,5 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = " ";
 
 // Set debug level for serial output?
 #define DEBUG 3
+
+#endif
