@@ -1979,76 +1979,31 @@ static WiFiClient* getNewLoggerWiFiClient(const LoggerEntry logger) {
 	_client->setTimeout(20000);
 	return _client;
 }
+
 /*****************************************************************
  * send data to rest api                                         *
  *****************************************************************/
-static unsigned long sendData(const LoggerEntry logger, const String& data, const int pin, const char* host, const char* url) {
-
-	unsigned long start_send = millis();
-	const __FlashStringHelper* contentType;
-	int result = 0;
-
-	String s_Host(FPSTR(host));
-	String s_url(FPSTR(url));
-
-	switch (logger) {
-	case Loggeraircms:
-		contentType = FPSTR(TXT_CONTENT_TYPE_TEXT_PLAIN);
-		break;
-	case LoggerInflux:
-		contentType = FPSTR(TXT_CONTENT_TYPE_INFLUXDB);
-		break;
-	default:
-		contentType = FPSTR(TXT_CONTENT_TYPE_JSON);
-		break;
-	}
-
-	std::unique_ptr<WiFiClient> client(getNewLoggerWiFiClient(logger));
-
-	HTTPClient http;
-	http.setTimeout(20 * 1000);
-	http.setUserAgent(SOFTWARE_VERSION + '/' + esp_chipid);
-    http.setReuse(false);
-	bool send_success = false;
-	if (logger == LoggerCustom && (*cfg::user_custom || *cfg::pwd_custom)) {
-		http.setAuthorization(cfg::user_custom, cfg::pwd_custom);
-	}
-	if (logger == LoggerInflux && (*cfg::user_influx || *cfg::pwd_influx)) {
-		http.setAuthorization(cfg::user_influx, cfg::pwd_influx);
-	}
-		if (http.begin(*client, s_Host, loggerConfigs[logger].destport, s_url, !!loggerConfigs[logger].session)) {
-		http.addHeader(F("Content-Type"), contentType);
-		http.addHeader(F("X-Sensor"), String(F(SENSOR_BASENAME)) + esp_chipid);
-		if (pin) {
-			http.addHeader(F("X-PIN"), String(pin));
+/* WIFI client to handle internet connections */
+WiFiClient client_;
+static bool sendDataWIFI(const String &data,const char* url){
+	bool is_sucessful = false;
+	if((cfg::wifi_enabled ) && (WiFi.status() == WL_CONNECTED)){
+		HTTPClient http;
+		// Your Domain name with URL path or IP address with path
+		if(http.begin(client_,url)){
+			http.addHeader("Content-Type", "application/json");
+			int httpResponseCode = http.POST("{\"controlValue\":23,\"error\":2,\"actualValue\":24.25,\"parameter\":1,\"time\":1005}");
+			Serial.print("HTTP Response code: ");
+			Serial.println(httpResponseCode);
+			/* Check if the data was sent sucessfully */
+			if(httpResponseCode == HTTP_CODE_OK){
+				is_sucessful = true;
+			}
+			http.end();
 		}
-
-		result = http.POST(data);
-
-		if (result >= HTTP_CODE_OK && result <= HTTP_CODE_ALREADY_REPORTED) {
-			debug_outln_info(F("Succeeded - "), s_Host);
-			send_success = true;
-		} else if (result >= HTTP_CODE_BAD_REQUEST) {
-			debug_outln_info(F("Request failed with error: "), String(result));
-			debug_outln_info(F("Details:"), http.getString());
-		}
-		http.end();
-	} else {
-		debug_outln_info(F("Failed connecting to "), s_Host);
 	}
-
-	if (!send_success && result != 0) {
-		sendData_error_count++;
-		last_sendData_returncode = result;
-	}
-
-	return millis() - start_send;
+	return is_sucessful;
 }
-
-/*****************************************************************
- * send data to mqtt api                                         *
- *****************************************************************/
-// rejected (see issue #33)
 
 /*****************************************************************
  * send data to influxdb                                         *
@@ -2778,6 +2733,8 @@ void loop(void) {
 		wdt_reset(); // nodemcu is alive
 		#endif
 	}
+
+	
 	yield();
 
 	if (send_now) {
@@ -2785,6 +2742,8 @@ void loop(void) {
 		RESERVE_STRING(data, LARGE_STR);
 		data = FPSTR(data_first_part);
 		RESERVE_STRING(result, MED_STR);
+
+		sendData("data","http://pid-api.herokuapp.com/post/data");
 
 
 		if (cfg::pms_read) {
