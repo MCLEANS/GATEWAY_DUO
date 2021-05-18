@@ -1992,14 +1992,14 @@ static WiFiClient* getNewLoggerWiFiClient(const LoggerEntry logger) {
  *****************************************************************/
 /* WIFI client to handle internet connections */
 WiFiClient client_;
-static bool sendDataWIFI(const String &data,const char* url){
+static bool sendDataWIFI(const char* url,const String &data){
 	bool is_sucessful = false;
 	if((cfg::wifi_enabled ) && (WiFi.status() == WL_CONNECTED)){
 		HTTPClient http;
 		// Your Domain name with URL path or IP address with path
 		if(http.begin(client_,url)){
 			http.addHeader("Content-Type", "application/json");
-			int httpResponseCode = http.POST("{\"controlValue\":763,\"error\":2,\"actualValue\":47.25,\"parameter\":1,\"time\":1005}");
+			int httpResponseCode = http.POST(data);
 			Serial.print("HTTP Response code: ");
 			Serial.println(httpResponseCode);
 			/* Check if the data was sent sucessfully */
@@ -2682,7 +2682,7 @@ void loop(void) {
 
 	
 	yield();
-	sendDataWIFI("data","http://pid-api.herokuapp.com/post/data");
+	sendDataWIFI("http://pid-api.herokuapp.com/post/data","{\"controlValue\":763,\"error\":2,\"actualValue\":47.25,\"parameter\":1,\"time\":1005}");
 	gprs.send_data("http://pid-api.herokuapp.com/post/data","{\"controlValue\":76,\"error\":2,\"actualValue\":98.97,\"parameter\":1,\"time\":1005}");
 
 
