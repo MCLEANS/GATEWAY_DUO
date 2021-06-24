@@ -247,6 +247,10 @@ bool gps_init_failed = false;
 bool rtc_init_failed = false;
 bool airrohr_selftest_failed = false;
 
+bool gsm_enabled = false;
+
+String server_url = "https://predict-data-api.herokuapp.com/data/jj0qlj6x09";
+
 #if defined(ESP8266)
 ESP8266WebServer server(80);
 #endif
@@ -1992,7 +1996,7 @@ static WiFiClient* getNewLoggerWiFiClient(const LoggerEntry logger) {
  *****************************************************************/
 /* WIFI client to handle internet connections */
 WiFiClient client_;
-static bool sendDataWIFI(const char* url,const String &data){
+static bool sendDataWIFI(String url,const String &data){
 	bool is_sucessful = false;
 	if((cfg::wifi_enabled ) && (WiFi.status() == WL_CONNECTED)){
 		HTTPClient http;
@@ -2687,10 +2691,14 @@ void loop(void) {
 		String payload = control_board.readString();
 		Serial.println(payload);
 		if(gsm_enabled){
-			gprs.send_data("http://pid-api.herokuapp.com/post/data","{\"controlValue\":76,\"error\":2,\"actualValue\":98.97,\"parameter\":1,\"time\":1005}");
+			Serial.print("GSM PAYLOAD :- ");
+			Serial.println(payload);
+			gprs.send_data(server_url,payload);
 		}
 		else if (!gsm_enabled){
-			sendDataWIFI("http://pid-api.herokuapp.com/post/data","{\"controlValue\":763,\"error\":2,\"actualValue\":47.25,\"parameter\":1,\"time\":1005}");
+			Serial.print("WIFI PAYLOAD :- ");
+			Serial.println(payload);
+			sendDataWIFI(server_url,payload);
 		}
 	}
 
