@@ -2708,8 +2708,6 @@ void loop(void) {
 		data = FPSTR(data_first_part);
 		RESERVE_STRING(result, MED_STR);
 
-		
-
 		if (cfg::pms_read) {
 			fetchSensorPMS(result_PMS);
 			data += result_PMS;
