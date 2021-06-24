@@ -2682,8 +2682,13 @@ void loop(void) {
 
 	
 	yield();
-	sendDataWIFI("http://pid-api.herokuapp.com/post/data","{\"controlValue\":763,\"error\":2,\"actualValue\":47.25,\"parameter\":1,\"time\":1005}");
-	gprs.send_data("http://pid-api.herokuapp.com/post/data","{\"controlValue\":76,\"error\":2,\"actualValue\":98.97,\"parameter\":1,\"time\":1005}");
+
+	while(control_board.available() > 0){
+		String payload = control_board.readString();
+		Serial.println(payload);
+	}
+	//sendDataWIFI("http://pid-api.herokuapp.com/post/data","{\"controlValue\":763,\"error\":2,\"actualValue\":47.25,\"parameter\":1,\"time\":1005}");
+	//gprs.send_data("http://pid-api.herokuapp.com/post/data","{\"controlValue\":76,\"error\":2,\"actualValue\":98.97,\"parameter\":1,\"time\":1005}");
 
 
 	if (send_now) {
