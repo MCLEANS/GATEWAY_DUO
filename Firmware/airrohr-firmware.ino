@@ -2686,10 +2686,13 @@ void loop(void) {
 	while(control_board.available() > 0){
 		String payload = control_board.readString();
 		Serial.println(payload);
+		if(gsm_enabled){
+			gprs.send_data("http://pid-api.herokuapp.com/post/data","{\"controlValue\":76,\"error\":2,\"actualValue\":98.97,\"parameter\":1,\"time\":1005}");
+		}
+		else if (!gsm_enabled){
+			sendDataWIFI("http://pid-api.herokuapp.com/post/data","{\"controlValue\":763,\"error\":2,\"actualValue\":47.25,\"parameter\":1,\"time\":1005}");
+		}
 	}
-	//sendDataWIFI("http://pid-api.herokuapp.com/post/data","{\"controlValue\":763,\"error\":2,\"actualValue\":47.25,\"parameter\":1,\"time\":1005}");
-	//gprs.send_data("http://pid-api.herokuapp.com/post/data","{\"controlValue\":76,\"error\":2,\"actualValue\":98.97,\"parameter\":1,\"time\":1005}");
-
 
 	if (send_now) {
 		last_signal_strength = WiFi.RSSI();
@@ -2750,7 +2753,10 @@ void loop(void) {
 			debug_outln_info(F("Connection lost, reconnecting "));
 			WiFi_error_count++;
 			WiFi.reconnect();
-			waitForWifiToConnect(20);
+			gsm_enabled = true;
+		}
+		else{
+			gsm_enabled = false;
 		}
 
 		// Resetting for next sampling
