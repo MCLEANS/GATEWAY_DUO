@@ -269,9 +269,9 @@ SoftwareSerial serialSDS;
 
 
 /****************************************************************
- * ATMEGA328P declaration
+ * control_board declaration
  * **************************************************************/
-SoftwareSerial atmega328p;
+SoftwareSerial control_board;
 
 /****************************************************************
  * GSM declaration
@@ -2559,7 +2559,7 @@ static void setupNetworkTime() {
 
 void setup(void) {
 	Serial.begin(9600);	// Output to Serial at 9600 baud
-	atmega328p.begin(9600, SWSERIAL_8N1,ATMEGA_TX,ATMEGA_RX,false,256);
+	control_board.begin(9600, SWSERIAL_8N1,CONTROL_BOARD_TX,CONTROL_BOARD_RX,false,256);
 	
 #if defined(ESP8266)
 	serialSDS.begin(9600, SWSERIAL_8N1, PM_SERIAL_RX, PM_SERIAL_TX);

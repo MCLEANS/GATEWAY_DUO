@@ -122,8 +122,8 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = " ";
 #define PM_SERIAL_TX D0
 
 //define pins for ATMEGA328P
-#define ATMEGA_RX D4
-#define ATMEGA_TX D3
+#define CONTROL_BOARD_RX D4
+#define CONTROL_BOARD_TX D3
 
 //GSM PINS
 #define GSM_RX D5
